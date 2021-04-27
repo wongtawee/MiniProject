@@ -68,3 +68,6 @@ exports.isValidUser = async (username, password) => {
 exports.checkExistingUser = (username) => {
   return users.users.findIndex((item) => item.username === username);
 };
+exports.findTransactions = async () => {
+  return transactions.transaction
+};
