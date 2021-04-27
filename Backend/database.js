@@ -68,6 +68,12 @@ exports.isValidUser = async (username, password) => {
 exports.checkExistingUser = (username) => {
   return users.users.findIndex((item) => item.username === username);
 };
+
 exports.findTransactions = async () => {
   return transactions.transaction
+};
+
+exports.findTransactionsByID = async (user_id) => {
+  let temp = transactions.transaction.filter(index => index.user_id == user_id)
+  return temp
 };
