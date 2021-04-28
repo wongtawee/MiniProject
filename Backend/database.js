@@ -77,3 +77,48 @@ exports.findTransactionsByID = async (user_id) => {
   let temp = transactions.transaction.filter(index => index.user_id == user_id)
   return temp
 };
+
+exports.addTransaction = async (req, username) => {
+  const { scientific_name, characteristic, foundsource, date } = req;
+  let lastTranID = await this.findTransactionID();
+  let newData = {}
+  newData.username = username
+  newData.tst_id = lastTranID
+  newData.scientific_name = scientific_name
+  newData.characteristic = characteristic
+  newData.foundsource = foundsource
+  newData.date = date
+  transactions = { transaction:[...transactions.transaction , newData]}
+  return transactions.transaction[lastTranID]
+};
+
+exports.findUserID = async (users_id) => {
+  return 
+};
+
+exports.findTransactionID = async () => {
+  let lastIndex = transactions.transaction.length
+  return transactions.transaction[lastIndex - 1].tst_id + 1;
+};
+
+exports.deleteTransaction = async (transactionID) => {
+  let found = await transactions.transaction.find(find => find.tst_id == transactionID)
+  if (!found) {
+    return false
+  }
+  transactions.transaction = await transactions.transaction.filter(find => find.tst_id != transactionID)
+  return transactions.transaction
+}
+
+exports.editTransaction = async (req) => {
+  const { scientific_name, characteristic, foundsource, date , tst_id} = req;
+  let found = await transactions.transaction.find(find => find.tst_id == tst_id)
+  if (!found) {
+    return false
+  }
+  found.scientific_name = scientific_name
+  found.characteristic = characteristic
+  found.date = date
+  found.foundsource = foundsource
+  return found
+}
