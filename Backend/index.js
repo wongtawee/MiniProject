@@ -92,6 +92,7 @@ router.get(
 );
 
 router.get("/history/:username", async (req, res) => {
+  console.log(req.params.username);
   let result = await db.findTransactionsByID(req.params.username);
   return res.json(result);
 });
@@ -104,13 +105,14 @@ router.get("/history", async (req, res) => {
 router.post(
   "/add",
   passport.authenticate("jwt", { session: false }),
-  (req, res, next) => {
+  async (req, res, next)  => {
 
     if (!req.user) {
       console.log(req.user);
     }
     else {
-      return res.json(db.addTransaction(req.body,req.user.username))
+      let result = await db.addTransaction(req.body,req.user.username)
+      return res.send(result)
     }
   }
 );
